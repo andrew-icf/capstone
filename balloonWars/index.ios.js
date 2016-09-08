@@ -12,30 +12,54 @@ import {
   NavigatorIOS
 } from 'react-native';
 
-let Directions = require('./ios/balloonWars/Directions');
-let Index = require('./ios/balloonWars/Index');
+const Directions = require('./ios/balloonWars/Directions');
 
-class balloonWars extends Component {
+export default class NavigatorIOSApp extends Component {
   render() {
     return (
       <NavigatorIOS
-        style={[
-          styles.container,
-          styles.welcome,
-          styles.instructions,
-          styles.button,
-          styles.buttonText,
-          styles.textLabel,
-          styles.textEdit
-        ]}
         initialRoute={{
-          title: "Balloon Wars",
-          component: Index
-        }}/>
+          component: balloonWars,
+        }}
+        style={{flex: 1}}
+      />
     );
   }
 }
 
+
+class balloonWars extends Component {
+  constructor (props, context) {
+    super(props, context);
+    this._onForward = this._onForward.bind(this);
+    this.state = {
+      text: ''
+    };
+  }
+  _onForward(){
+    console.log("props", this.props);
+    this.props.navigator.push({
+      title: 'Directions',
+      component: Directions
+    });
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Balloon Wars
+        </Text>
+        <Text style={styles.textLabel}>What's your name</Text>
+          <TextInput style={styles.textEdit}
+          onChangeText={(text) => this.setState({text})}
+          value={this.state.text}/>
+          <TouchableHighlight style={styles.button} onPress={this._onForward}>
+            <Text style={styles.buttonText}>Let's Play</Text>
+          </TouchableHighlight>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -89,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('balloonWars', () => balloonWars);
+AppRegistry.registerComponent('balloonWars', () => NavigatorIOSApp);
