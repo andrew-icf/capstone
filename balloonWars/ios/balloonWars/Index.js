@@ -9,33 +9,35 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TextInput,
-  NavigatorIOS
+  Navigator
 } from 'react-native';
 
-let Directions = require('./ios/balloonWars/Directions');
-let Index = require('./ios/balloonWars/Index');
 
-class balloonWars extends Component {
+class Index extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      text: ''
+
+    };
+  }
   render() {
     return (
-      <NavigatorIOS
-        style={[
-          styles.container,
-          styles.welcome,
-          styles.instructions,
-          styles.button,
-          styles.buttonText,
-          styles.textLabel,
-          styles.textEdit
-        ]}
-        initialRoute={{
-          title: "Balloon Wars",
-          component: Index
-        }}/>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Balloon Wars
+          </Text>
+          <Text style={styles.textLabel}>What's your name</Text>
+            <TextInput style={styles.textEdit}
+            onChangeText={(text) => this.setState({text})}
+            value={this.state.text}/>
+          <TouchableHighlight style={styles.button} onPress={this.showAlert}>
+            <Text style={styles.buttonText}>Let's Play</Text>
+          </TouchableHighlight>
+        </View>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -89,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('balloonWars', () => balloonWars);
+module.exports = Index;
