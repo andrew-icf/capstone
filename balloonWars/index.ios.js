@@ -19,7 +19,8 @@ export default class NavigatorIOSApp extends Component {
     return (
       <NavigatorIOS
         initialRoute={{
-          component: balloonWars,
+          title: 'Balloon Wars',
+          component: balloonWars
         }}
         style={{flex: 1}}
       />
@@ -33,14 +34,15 @@ class balloonWars extends Component {
     super(props, context);
     this._onForward = this._onForward.bind(this);
     this.state = {
-      text: ''
+      text: 'Name'
     };
   }
   _onForward(){
     console.log("props", this.props);
     this.props.navigator.push({
       title: 'Directions',
-      component: Directions
+      component: Directions,
+      passProps: {name: this.state.text}
     });
   }
   render() {
