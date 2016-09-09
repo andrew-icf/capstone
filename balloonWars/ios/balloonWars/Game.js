@@ -10,32 +10,22 @@ import {
   NavigatorIOS
 } from 'react-native';
 
-const Game = require('./Game');
+const HighScore = require('./HighScore');
 
-const Directions = React.createClass({
-  _onGame(){
+const Game = React.createClass({
+  _onHighScore(){
     this.props.navigator.push({
-      title: 'Balloon Wars',
-      component: Game,
+      title: 'How\'d you do?',
+      component: HighScore,
       passProps: {score: 0}
     });
-  },
-  popOnce() {
-    this.props.navigator.pop();
   },
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Hi {this.props.name} </Text>
-        <Text style={styles.text}>How to play:</Text>
-        <Text style={styles.red}>RED ballons gives you points</Text>
-        <Text style={styles.green}>GREEN ballons takes points away</Text>
-        <Text style={styles.yellow}>YELLOW ballons are a bonus - shake your phone to increase your score</Text>
-        <TouchableHighlight style={styles.button} onPress={() => this._onGame()}>
-          <Text style={styles.buttonText}>Go to War!</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={() => this.popOnce()}>
-          <Text style={styles.buttonText}>Go Back</Text>
+        <Text style={styles.header}>SCORE {this.props.score}</Text>
+        <TouchableHighlight style={styles.button} onPress={() => this._onHighScore()}>
+          <Text style={styles.buttonText}>Checkout your score</Text>
         </TouchableHighlight>
       </View>
     );
@@ -95,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = Directions;
+module.exports = Game;
