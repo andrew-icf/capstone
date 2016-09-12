@@ -5,32 +5,56 @@ import {
   Text,
   View,
   TouchableHighlight,
-  TouchableOpacity,
   TextInput,
-  NavigatorIOS
+  NavigatorIOS,
+  Animated,
+  LayoutAnimation
 } from 'react-native';
 
 const HighScore = require('./HighScore');
 
-const Game = React.createClass({
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      size: new Animated.Value(80),
+      Radius: new Animated.Value(40)
+    };
+  }
+  _reload(){
+    this.props.navigator.pop();
+  }
   _onHighScore(){
     this.props.navigator.push({
       title: 'How\'d you do?',
       component: HighScore,
       passProps: {score: 0}
     });
-  },
+  }
   render() {
+    const { size, Radius } = this.state;
+
     return (
       <View style={styles.container}>
         <Text style={styles.header}>SCORE {this.props.score}</Text>
+        <Animated.View style={[styles.circle, {
+          height: size,
+          width: size,
+          borderRadius: Radius
+        }]}
+
+        />
+        <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
+          <Text style={styles.buttonText}>Play Again!</Text>
+        </TouchableHighlight>
         <TouchableHighlight style={styles.button} onPress={() => this._onHighScore()}>
           <Text style={styles.buttonText}>Checkout your score</Text>
         </TouchableHighlight>
       </View>
     );
   }
-});
+  
+}
 
 
 const styles = StyleSheet.create({
@@ -83,6 +107,10 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
+  circle: {
+    backgroundColor: 'skyblue',
+    borderRadius: 50
+  }
 });
 
 module.exports = Game;
