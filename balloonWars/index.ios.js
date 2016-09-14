@@ -38,7 +38,6 @@ class balloonWars extends Component {
     };
   }
   _onForward(){
-    console.log("props", this.props);
     this.props.navigator.push({
       title: 'Directions',
       component: Directions,

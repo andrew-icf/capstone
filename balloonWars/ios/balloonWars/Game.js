@@ -8,9 +8,13 @@ import {
   TextInput,
   NavigatorIOS,
   Animated,
-  LayoutAnimation
 } from 'react-native';
 
+const Dimensions = require('Dimensions');
+const {
+  width,
+  height
+} = Dimensions.get('window');
 const HighScore = require('./HighScore');
 
 class Game extends React.Component {
@@ -18,8 +22,17 @@ class Game extends React.Component {
     super(props);
     this.state = {
       size: new Animated.Value(80),
-      Radius: new Animated.Value(40)
+      Radius: new Animated.Value(40),
+      pan: new Animated.ValueXY()
     };
+  }
+  _getStyle() {
+    return [
+      styles.circle,
+      {
+        transform: this.state.pan.getTranslateTransform()
+      }
+    ];
   }
   _reload(){
     this.props.navigator.pop();
@@ -41,7 +54,7 @@ class Game extends React.Component {
           height: size,
           width: size,
           borderRadius: Radius
-        }]}
+        }, this._getStyle()]}
 
         />
         <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
@@ -53,7 +66,33 @@ class Game extends React.Component {
       </View>
     );
   }
-  
+  componentWillMount() {
+    const { size, Radius, pan } = this.state;
+    const num = 120;
+    Animated.timing(
+      size, {
+        toValue: num,
+        friction: 1,
+      }
+    ).start();
+
+    Animated.timing(
+      Radius, {
+        toValue: size.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 100],
+        }),
+
+      }
+    ).start();
+
+    Animated.spring(
+      pan, {
+      toValue: {x:100, y: 50},
+      tension: 2,
+      friction: 2
+    }).start();
+  }
 }
 
 
