@@ -12,25 +12,23 @@ import {
 
 
 const HighScore = require('./HighScore');
-let xNum = Math.floor(Math.random() * 250) + 1;
-let yNum = Math.floor(Math.random() * 250) + 1;
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pan: new Animated.ValueXY({x: 0, y: 0}),
+      panCircle: new Animated.ValueXY({x: 350, y: 0}),
+      panSquare: new Animated.ValueXY({x: 0, y: 30}),
+      panTriangle: new Animated.ValueXY({x: 0, y: 0}),
       score: 0
     };
   }
-  // _circle() {
-  //   <Animated.View style={[ styles.circle, this._getStyle() ]}/>
-  // }
+
   _getCircle() {
     return [
       styles.circle,
       {
-        transform: this.state.pan.getTranslateTransform()
+        transform: this.state.panCircle.getTranslateTransform()
       }
     ];
   }
@@ -38,7 +36,7 @@ class Game extends React.Component {
     return [
       styles.square,
       {
-        transform: this.state.pan.getTranslateTransform()
+        transform: this.state.panSquare.getTranslateTransform()
       }
     ];
   }
@@ -46,7 +44,7 @@ class Game extends React.Component {
     return [
       styles.triangle,
       {
-        transform: this.state.pan.getTranslateTransform()
+        transform: this.state.panTriangle.getTranslateTransform()
       }
     ];
   }
@@ -94,8 +92,20 @@ class Game extends React.Component {
   }
   componentDidMount() {
     Animated.timing(
-      this.state.pan, {
-      toValue: { x: xNum , y: yNum },
+      this.state.panCircle, {
+      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
+      tension: 4,
+      friction: 20
+    }).start();
+    Animated.timing(
+      this.state.panSquare, {
+      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
+      tension: 4,
+      friction: 20
+    }).start();
+    Animated.timing(
+      this.state.panTriangle, {
+      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
       tension: 4,
       friction: 20
     }).start();
