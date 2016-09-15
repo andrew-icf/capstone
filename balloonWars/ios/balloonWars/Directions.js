@@ -14,10 +14,11 @@ const Game = require('./Game');
 
 const Directions = React.createClass({
   _onGame(){
+    let score = 0;
     this.props.navigator.push({
       title: 'Balloon Wars',
       component: Game,
-      passProps: {score: 0}
+      passProps: {score: score}
     });
   },
   popOnce() {

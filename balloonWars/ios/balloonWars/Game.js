@@ -10,23 +10,23 @@ import {
   Animated,
 } from 'react-native';
 
-const Dimensions = require('Dimensions');
-const {
-  width,
-  height
-} = Dimensions.get('window');
+
 const HighScore = require('./HighScore');
+let xNum = Math.floor(Math.random() * 250) + 1;
+let yNum = Math.floor(Math.random() * 250) + 1;
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: new Animated.Value(80),
-      Radius: new Animated.Value(40),
-      pan: new Animated.ValueXY()
+      pan: new Animated.ValueXY({x: 0, y: 0}),
+      score: 0
     };
   }
-  _getStyle() {
+  // _circle() {
+  //   <Animated.View style={[ styles.circle, this._getStyle() ]}/>
+  // }
+  _getCircle() {
     return [
       styles.circle,
       {
@@ -34,29 +34,55 @@ class Game extends React.Component {
       }
     ];
   }
+  _getSquare() {
+    return [
+      styles.square,
+      {
+        transform: this.state.pan.getTranslateTransform()
+      }
+    ];
+  }
+  _getTriangle() {
+    return [
+      styles.triangle,
+      {
+        transform: this.state.pan.getTranslateTransform()
+      }
+    ];
+  }
+  _bounce(){
+    if (x > 350) {
+      // go the other way
+    }
+    if (x < 0) {
+      // go another way
+    }
+  }
   _reload(){
     this.props.navigator.pop();
   }
   _onHighScore(){
+    let score = 0;
+    score++;
     this.props.navigator.push({
       title: 'How\'d you do?',
       component: HighScore,
-      passProps: {score: 0}
+      passProps: {score: this.state.score}
     });
   }
+  _addOne(){
+    this.state.score++;
+  }
   render() {
-    const { size, Radius } = this.state;
-
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>SCORE {this.props.score}</Text>
-        <Animated.View style={[styles.circle, {
-          height: size,
-          width: size,
-          borderRadius: Radius
-        }, this._getStyle()]}
-
-        />
+        <View style={styles.box}>
+          <Animated.View style={[ styles.circle, this._getCircle() ]}/>
+          <TouchableHighlight onPress={() => this._addOne()}>
+            <Animated.View style={[ styles.square, this._getSquare() ]}/>
+          </TouchableHighlight>
+          <Animated.View style={[ styles.triangle, this._getTriangle() ]}/>
+        </View>
         <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
           <Text style={styles.buttonText}>Play Again!</Text>
         </TouchableHighlight>
@@ -66,31 +92,12 @@ class Game extends React.Component {
       </View>
     );
   }
-  componentWillMount() {
-    const { size, Radius, pan } = this.state;
-    const num = 120;
+  componentDidMount() {
     Animated.timing(
-      size, {
-        toValue: num,
-        friction: 1,
-      }
-    ).start();
-
-    Animated.timing(
-      Radius, {
-        toValue: size.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 100],
-        }),
-
-      }
-    ).start();
-
-    Animated.spring(
-      pan, {
-      toValue: {x:100, y: 50},
-      tension: 2,
-      friction: 2
+      this.state.pan, {
+      toValue: { x: xNum , y: yNum },
+      tension: 4,
+      friction: 20
     }).start();
   }
 }
@@ -106,6 +113,12 @@ const styles = StyleSheet.create({
     height: 170,
     width: 380,
     paddingLeft: 10,
+  },
+  box: {
+    flex: 1,
+    minWidth: 350,
+    minHeight: 80,
+    backgroundColor: 'hsl(261, 62%, 81%)'
   },
   header: {
     fontSize: 30,
@@ -147,8 +160,29 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   circle: {
-    backgroundColor: 'skyblue',
+    width: 40,
+    height: 40,
+    backgroundColor: 'hsl(128, 92%, 37%)',
     borderRadius: 50
+  },
+  square: {
+    width: 45,
+    height: 45,
+    backgroundColor: 'red',
+  },
+  triangle: {
+    width: 0,
+       height: 0,
+       backgroundColor: 'transparent',
+       borderStyle: 'solid',
+       borderTopWidth: 0,
+       borderRightWidth: 25,
+       borderBottomWidth: 50,
+       borderLeftWidth: 25,
+       borderTopColor: 'transparent',
+       borderRightColor: 'transparent',
+       borderBottomColor: 'yellow',
+       borderLeftColor: 'transparent',
   }
 });
 
