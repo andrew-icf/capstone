@@ -25,13 +25,13 @@ const Directions = React.createClass({
     this.props.navigator.pop();
   },
   render() {
+    // <Text style={styles.yellow}>YELLOW ballons are a bonus - shake your phone to increase your score</Text>
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Hi {this.props.name} </Text>
         <Text style={styles.text}>How to play:</Text>
         <Text style={styles.red}>RED ballons gives you points</Text>
         <Text style={styles.green}>GREEN ballons takes points away</Text>
-        <Text style={styles.yellow}>YELLOW ballons are a bonus - shake your phone to increase your score</Text>
         <TouchableHighlight style={styles.button} onPress={() => this._onGame()}>
           <Text style={styles.buttonText}>Go to War!</Text>
         </TouchableHighlight>

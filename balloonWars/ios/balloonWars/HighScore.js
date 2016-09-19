@@ -17,7 +17,7 @@ const HighScore = React.createClass({
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>HIGHSCORE {this.props.score}</Text>
+        <Text style={styles.header}>SCORE: {this.props.score} POINTS</Text>
         <TouchableHighlight style={styles.button} onPress={() => this.popAll()}>
           <Text style={styles.buttonText}>HOME</Text>
         </TouchableHighlight>

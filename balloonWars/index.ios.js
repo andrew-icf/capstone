@@ -50,7 +50,7 @@ class balloonWars extends Component {
         <Text style={styles.welcome}>
           Balloon Wars
         </Text>
-        <Text style={styles.textLabel}>What's your name</Text>
+        <Text style={styles.textLabel}></Text>
           <TextInput style={styles.textEdit}
           onChangeText={(text) => this.setState({text})}
           value={this.state.text}/>

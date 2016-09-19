@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Animatable from 'react-native-animatable';
 import {
   AppRegistry,
   StyleSheet,
@@ -17,45 +18,24 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      panCircle: new Animated.ValueXY({x: 350, y: 0}),
-      panSquare: new Animated.ValueXY({x: 0, y: 30}),
+      panCircle: new Animated.ValueXY({x: 0, y: 0}),
+      panCircle1: new Animated.ValueXY({x: 0, y: 0}),
+      panCircle2: new Animated.ValueXY({x: 0, y: 0}),
+      panCircle3: new Animated.ValueXY({x: 0, y: 0}),
+      panCircle4: new Animated.ValueXY({x: 0, y: 0}),
+      panSquare: new Animated.ValueXY({x: 0, y: 0}),
       panTriangle: new Animated.ValueXY({x: 0, y: 0}),
       score: 0
     };
   }
-
-  _getCircle() {
-    return [
-      styles.circle,
-      {
-        transform: this.state.panCircle.getTranslateTransform()
-      }
-    ];
-  }
-  _getSquare() {
-    return [
-      styles.square,
-      {
-        transform: this.state.panSquare.getTranslateTransform()
-      }
-    ];
-  }
-  _getTriangle() {
-    return [
-      styles.triangle,
-      {
-        transform: this.state.panTriangle.getTranslateTransform()
-      }
-    ];
-  }
-  _bounce(){
-    if (x > 350) {
-      // go the other way
+transform(shapeName, shapeType = "circle"){
+return [
+  styles[shapeType],
+    {
+      transform: this.state[shapeName].getTranslateTransform()
     }
-    if (x < 0) {
-      // go another way
-    }
-  }
+  ];
+}
   _reload(){
     this.props.navigator.pop();
   }
@@ -65,21 +45,37 @@ class Game extends React.Component {
     this.props.navigator.push({
       title: 'How\'d you do?',
       component: HighScore,
-      passProps: {score: this.state.score}
+      passProps: { score: this.state.score }
     });
   }
+  _bounce(shapeName){
+    if (shapeName > 350) {
+
+    }
+  }
   _addOne(){
-    this.state.score++;
+    this.state.score = this.state.score + 1; //++ wasn't working all the time
+  }
+  _minusOne(){
+    this.state.score = this.state.score - 1; //-- wasn't working all the time
   }
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.box}>
-          <Animated.View style={[ styles.circle, this._getCircle() ]}/>
-          <TouchableHighlight onPress={() => this._addOne()}>
-            <Animated.View style={[ styles.square, this._getSquare() ]}/>
+          <TouchableHighlight onPress={() => this._minusOne()}>
+            <Animated.View style={[ styles.circle, this.transform("panCircle") ]}/>
           </TouchableHighlight>
-          <Animated.View style={[ styles.triangle, this._getTriangle() ]}/>
+          <TouchableHighlight onPress={() => this._minusOne()}>
+            <Animated.View style={[ styles.circle, this.transform("panCircle1") ]}/>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._minusOne()}>
+            <Animated.View style={[ styles.circle, this.transform("panCircle2") ]}/>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._addOne()}>
+            <Animated.View style={[ styles.square, this.transform("panSquare", "square") ]}/>
+          </TouchableHighlight>
+            <Animated.View style={[ styles.triangle, this.transform("panTriangle", "triangle") ]}/>
         </View>
         <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
           <Text style={styles.buttonText}>Play Again!</Text>
@@ -90,28 +86,30 @@ class Game extends React.Component {
       </View>
     );
   }
+
+  timing(shapeName){
+    return Animated.timing(
+      this.state[shapeName], {
+        toValue: { x:  Math.floor(Math.random() * 300) + 0, y:  Math.floor(Math.random() * 189) + 0 },
+        tension: 11,
+        friction: 1
+      })
+  }
   componentDidMount() {
-    Animated.timing(
-      this.state.panCircle, {
-      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
-      tension: 4,
-      friction: 20
-    }).start();
-    Animated.timing(
-      this.state.panSquare, {
-      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
-      tension: 4,
-      friction: 20
-    }).start();
-    Animated.timing(
-      this.state.panTriangle, {
-      toValue: { x: Math.floor(Math.random() * 350) + 1 , y: Math.floor(Math.random() * 250) + 1 },
-      tension: 4,
-      friction: 20
-    }).start();
+    this.triggerAnimation();
+  }
+  triggerAnimation(){
+    Animated.parallel([
+        this.timing("panCircle"),
+        this.timing("panCircle1"),
+        this.timing("panCircle2"),
+        this.timing("panCircle3"),
+        this.timing("panCircle4"),
+        this.timing("panSquare"),
+        this.timing("panTriangle")
+    ]).start(this.triggerAnimation.bind(this));
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -119,16 +117,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'hsl(233,100%,16%)',
-    paddingTop: 150,
+    paddingTop: 100,
     height: 170,
     width: 380,
     paddingLeft: 10,
   },
   box: {
     flex: 1,
-    minWidth: 350,
-    minHeight: 80,
-    backgroundColor: 'hsl(261, 62%, 81%)'
+    width: 350,
+    height: 100,
+    backgroundColor: 'hsl(123, 72%, 8%)'
   },
   header: {
     fontSize: 30,
@@ -170,14 +168,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   circle: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     backgroundColor: 'hsl(128, 92%, 37%)',
     borderRadius: 50
   },
   square: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     backgroundColor: 'red',
   },
   triangle: {
