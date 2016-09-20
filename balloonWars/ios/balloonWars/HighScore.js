@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Animatable from 'react-native-animatable';
 import {
   AppRegistry,
   StyleSheet,
@@ -14,10 +15,13 @@ const HighScore = React.createClass({
   popAll(){
     this.props.navigator.popToTop();
   },
+  _reload(){
+    this.props.navigator.pop();
+  },
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>SCORE: {this.props.score} POINTS</Text>
+        <Animatable.Text style={styles.header} animation="lightSpeedIn">You scored {this.props.score} POINTS</Animatable.Text>
         <TouchableHighlight style={styles.button} onPress={() => this.popAll()}>
           <Text style={styles.buttonText}>HOME</Text>
         </TouchableHighlight>

@@ -40,9 +40,6 @@ return [
     }
   ];
 }
-  _reload(){
-    this.props.navigator.pop();
-  }
   _onHighScore(){
     let score = 0;
     score++;
@@ -61,7 +58,6 @@ return [
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.box}>
           <Animated.Image style={[ styles.image, this.transform("panBlue", "image") ]} source={require('../../images/blueBalloon.png')} />
           <TouchableHighlight onPress={() => this._minusOne()}>
             <Animated.Image style={[ styles.image, this.transform("panGreen", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
@@ -82,20 +78,13 @@ return [
             <Animated.Image style={[ styles.image, this.transform("panGreen4", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
           <Animated.Image style={[ styles.image, this.transform("panBlue1", "image") ]} source={require('../../images/blueBalloon.png')} />
-        </View>
-        <TouchableHighlight style={[styles.button, styles.hide]} onPress={() => this._reload()}>
-          <Text style={styles.buttonText}>Play Again!</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={() => this._onHighScore()}>
-          <Text style={styles.buttonText}>Checkout your score</Text>
-        </TouchableHighlight>
       </View>
     );
   }
 
   timing(shapeName){
     let x = Math.floor(Math.random() * 310) + 0;
-    let y = Math.floor(Math.random() * 40) + 0;
+    let y = Math.floor(Math.random() * 90) + 0;
     return Animated.timing(
       this.state[shapeName], {
         toValue: { x: x, y: y },
@@ -108,7 +97,7 @@ return [
     this.timed();
   }
   timed(){
-    return setTimeout(() => this.setState({gameOver: true}), 2000);
+    return setTimeout(() => this.setState({gameOver: true}), 10000);
   }
   triggerAnimation(){
     if(!this.state.gameOver) {
@@ -123,8 +112,11 @@ return [
           this.timing("panBlue1")
       ])
       .start(this.triggerAnimation.bind(this));
-    } else {
-      // {this.props.score}
+    } else if (this.state.gameOver === true) {
+      this.props.navigator.push({
+        component: HighScore,
+        passProps: { score: this.state.score }
+      });
     }
   };
 }
@@ -181,7 +173,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     borderRadius: 5,
-    marginTop: 20
+    marginTop: 15,
+    marginBottom: 5
   },
   buttonText: {
     fontSize: 18,
