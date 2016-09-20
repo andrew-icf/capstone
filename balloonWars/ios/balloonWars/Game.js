@@ -9,6 +9,7 @@ import {
   TextInput,
   NavigatorIOS,
   Animated,
+  Image
 } from 'react-native';
 
 
@@ -48,11 +49,6 @@ return [
       passProps: { score: this.state.score }
     });
   }
-  _bounce(shapeName){
-    if (shapeName > 350) {
-
-    }
-  }
   _addOne(){
     this.state.score = this.state.score + 1; //++ wasn't working all the time
   }
@@ -64,18 +60,18 @@ return [
       <View style={styles.container}>
         <View style={styles.box}>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.View style={[ styles.circle, this.transform("panCircle") ]}/>
+            <Animated.Image style={[ styles.image, this.transform("panCircle", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.View style={[ styles.circle, this.transform("panCircle1") ]}/>
+          <Animated.Image style={[ styles.image, this.transform("panCircle1", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.View style={[ styles.circle, this.transform("panCircle2") ]}/>
+          <Animated.Image style={[ styles.image, this.transform("panCircle2", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._addOne()}>
-            <Animated.View style={[ styles.square, this.transform("panSquare", "square") ]}/>
+          <Animated.Image style={[ styles.image, this.transform("panSquare", "image") ]} source={require('../../images/redBalloon.png')} />
           </TouchableHighlight>
-            <Animated.View style={[ styles.triangle, this.transform("panTriangle", "triangle") ]}/>
+          <Animated.Image style={[ styles.image, this.transform("panTriangle", "image") ]} source={require('../../images/blueBalloon.png')} />
         </View>
         <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
           <Text style={styles.buttonText}>Play Again!</Text>
@@ -90,13 +86,17 @@ return [
   timing(shapeName){
     return Animated.timing(
       this.state[shapeName], {
-        toValue: { x:  Math.floor(Math.random() * 300) + 0, y:  Math.floor(Math.random() * 189) + 0 },
+        toValue: { x: Math.floor(Math.random() * 295) + 0, y: Math.floor(Math.random() * 89) + 0 },
         tension: 11,
         friction: 1
-      })
+      });
   }
   componentDidMount() {
     this.triggerAnimation();
+    // return setTimeout(() => this.triggerAnimation.stopAnimation( ), 3000);
+  }
+  timed(){
+    return setTimeout(() => this.triggerAnimation.stopAnimation( 3000 ), 3000);
   }
   triggerAnimation(){
     Animated.parallel([
@@ -108,7 +108,7 @@ return [
         this.timing("panSquare"),
         this.timing("panTriangle")
     ]).start(this.triggerAnimation.bind(this));
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -122,10 +122,13 @@ const styles = StyleSheet.create({
     width: 380,
     paddingLeft: 10,
   },
+  image: {
+    width: 55,
+    height: 70
+  },
   box: {
     flex: 1,
     width: 350,
-    height: 100,
     backgroundColor: 'hsl(123, 72%, 8%)'
   },
   header: {

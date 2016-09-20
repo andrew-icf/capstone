@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Animatable from 'react-native-animatable';
 import {
   AppRegistry,
   StyleSheet,
@@ -28,10 +29,10 @@ const Directions = React.createClass({
     // <Text style={styles.yellow}>YELLOW ballons are a bonus - shake your phone to increase your score</Text>
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Hi {this.props.name} </Text>
-        <Text style={styles.text}>How to play:</Text>
-        <Text style={styles.red}>RED ballons gives you points</Text>
-        <Text style={styles.green}>GREEN ballons takes points away</Text>
+        <Animatable.Text style={styles.header} animation="fadeInUp">Hi {this.props.name}</Animatable.Text>
+        <Animatable.Text style={styles.text} animation="fadeInUp">How to play:</Animatable.Text>
+        <Animatable.Text style={styles.red} animation="fadeInUp">* Click RED balloons to get points *</Animatable.Text>
+        <Animatable.Text style={styles.green} animation="fadeInUp">But be careful GREEN balloons take points away</Animatable.Text>
         <TouchableHighlight style={styles.button} onPress={() => this._onGame()}>
           <Text style={styles.buttonText}>Go to War!</Text>
         </TouchableHighlight>
@@ -62,10 +63,10 @@ const styles = StyleSheet.create({
     color: 'hsl(128, 92%, 37%)'
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'hsl(128, 92%, 37%)',
-    textDecorationLine: 'underline',
-    paddingBottom: 10
+    paddingBottom: 10,
+    fontWeight: '900'
   },
   red: {
     fontSize: 18,

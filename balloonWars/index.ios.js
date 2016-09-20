@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import * as Animatable from 'react-native-animatable';
 import {
   AppRegistry,
   StyleSheet,
@@ -47,9 +48,7 @@ class balloonWars extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Balloon Wars
-        </Text>
+        <Animatable.Text style={styles.welcome} animation="zoomInUp">Balloon Wars</Animatable.Text>
         <Text style={styles.textLabel}></Text>
           <TextInput style={styles.textEdit}
           onChangeText={(text) => this.setState({text})}
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'hsl(233,100%,16%)'
   },
   welcome: {
-    fontSize: 40,
+    fontSize: 44,
     textAlign: 'center',
     marginTop: -200,
     marginBottom: 60,
