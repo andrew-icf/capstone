@@ -19,13 +19,13 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      panCircle: new Animated.ValueXY({x: 0, y: 0}),
-      panCircle1: new Animated.ValueXY({x: 0, y: 0}),
-      panCircle2: new Animated.ValueXY({x: 0, y: 0}),
-      panCircle3: new Animated.ValueXY({x: 0, y: 0}),
-      panCircle4: new Animated.ValueXY({x: 0, y: 0}),
-      panSquare: new Animated.ValueXY({x: 0, y: 0}),
-      panTriangle: new Animated.ValueXY({x: 0, y: 0}),
+      panGreen: new Animated.ValueXY({x: 0, y: 0}),
+      panGreen1: new Animated.ValueXY({x: 0, y: 0}),
+      panGreen2: new Animated.ValueXY({x: 0, y: 0}),
+      panGreen3: new Animated.ValueXY({x: 0, y: 0}),
+      panGreen4: new Animated.ValueXY({x: 0, y: 0}),
+      panRed: new Animated.ValueXY({x: 0, y: 0}),
+      panBlue: new Animated.ValueXY({x: 0, y: 0}),
       score: 0
     };
   }
@@ -59,19 +59,26 @@ return [
     return (
       <View style={styles.container}>
         <View style={styles.box}>
+          <Animated.Image style={[ styles.image, this.transform("panBlue", "image") ]} source={require('../../images/blueBalloon.png')} />
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panCircle", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-          <Animated.Image style={[ styles.image, this.transform("panCircle1", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen1", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-          <Animated.Image style={[ styles.image, this.transform("panCircle2", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen3", "image") ]} source={require('../../images/greenBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._addOne()}>
-          <Animated.Image style={[ styles.image, this.transform("panSquare", "image") ]} source={require('../../images/redBalloon.png')} />
+          <Animated.Image style={[ styles.image, this.transform("panRed", "image") ]} source={require('../../images/redBalloon.png')} />
           </TouchableHighlight>
-          <Animated.Image style={[ styles.image, this.transform("panTriangle", "image") ]} source={require('../../images/blueBalloon.png')} />
+          <TouchableHighlight onPress={() => this._minusOne()}>
+            <Animated.Image style={[ styles.image, this.transform("panGreen2", "image") ]} source={require('../../images/greenBalloon.png')} />
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._minusOne()}>
+            <Animated.Image style={[ styles.image, this.transform("panGreen4", "image") ]} source={require('../../images/greenBalloon.png')} />
+          </TouchableHighlight>
+          <Animated.Image style={[ styles.image, this.transform("panBlue", "image") ]} source={require('../../images/blueBalloon.png')} />
         </View>
         <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
           <Text style={styles.buttonText}>Play Again!</Text>
@@ -86,7 +93,7 @@ return [
   timing(shapeName){
     return Animated.timing(
       this.state[shapeName], {
-        toValue: { x: Math.floor(Math.random() * 295) + 0, y: Math.floor(Math.random() * 89) + 0 },
+        toValue: { x: Math.floor(Math.random() * 295) + 0, y: Math.floor(Math.random() * 45) + 0 },
         tension: 11,
         friction: 1
       });
@@ -100,13 +107,13 @@ return [
   }
   triggerAnimation(){
     Animated.parallel([
-        this.timing("panCircle"),
-        this.timing("panCircle1"),
-        this.timing("panCircle2"),
-        this.timing("panCircle3"),
-        this.timing("panCircle4"),
-        this.timing("panSquare"),
-        this.timing("panTriangle")
+        this.timing("panGreen"),
+        this.timing("panGreen1"),
+        this.timing("panGreen2"),
+        this.timing("panGreen3"),
+        this.timing("panGreen4"),
+        this.timing("panRed"),
+        this.timing("panBlue")
     ]).start(this.triggerAnimation.bind(this));
   };
 }
@@ -123,8 +130,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   image: {
-    width: 55,
-    height: 70
+    width: 39,
+    height: 50
   },
   box: {
     flex: 1,
