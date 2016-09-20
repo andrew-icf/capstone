@@ -9,7 +9,8 @@ import {
   TextInput,
   NavigatorIOS,
   Animated,
-  Image
+  Image,
+  Vibration
 } from 'react-native';
 
 
@@ -26,7 +27,9 @@ class Game extends React.Component {
       panGreen4: new Animated.ValueXY({x: 0, y: 0}),
       panRed: new Animated.ValueXY({x: 0, y: 0}),
       panBlue: new Animated.ValueXY({x: 0, y: 0}),
-      score: 0
+      panBlue1: new Animated.ValueXY({x: 0, y: 0}),
+      score: 0,
+      gameOver: false
     };
   }
 transform(shapeName, shapeType = "circle"){
@@ -61,26 +64,26 @@ return [
         <View style={styles.box}>
           <Animated.Image style={[ styles.image, this.transform("panBlue", "image") ]} source={require('../../images/blueBalloon.png')} />
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panGreen", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panGreen1", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen1", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panGreen3", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen3", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._addOne()}>
           <Animated.Image style={[ styles.image, this.transform("panRed", "image") ]} source={require('../../images/redBalloon.png')} />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panGreen2", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen2", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
           <TouchableHighlight onPress={() => this._minusOne()}>
-            <Animated.Image style={[ styles.image, this.transform("panGreen4", "image") ]} source={require('../../images/greenBalloon.png')} />
+            <Animated.Image style={[ styles.image, this.transform("panGreen4", "image") ]} source={require('../../images/greenBalloon.png')} onPress={() => Vibration.vibrate()}/>
           </TouchableHighlight>
-          <Animated.Image style={[ styles.image, this.transform("panBlue", "image") ]} source={require('../../images/blueBalloon.png')} />
+          <Animated.Image style={[ styles.image, this.transform("panBlue1", "image") ]} source={require('../../images/blueBalloon.png')} />
         </View>
-        <TouchableHighlight style={styles.button} onPress={() => this._reload()}>
+        <TouchableHighlight style={[styles.button, styles.hide]} onPress={() => this._reload()}>
           <Text style={styles.buttonText}>Play Again!</Text>
         </TouchableHighlight>
         <TouchableHighlight style={styles.button} onPress={() => this._onHighScore()}>
@@ -91,30 +94,38 @@ return [
   }
 
   timing(shapeName){
+    let x = Math.floor(Math.random() * 310) + 0;
+    let y = Math.floor(Math.random() * 40) + 0;
     return Animated.timing(
       this.state[shapeName], {
-        toValue: { x: Math.floor(Math.random() * 295) + 0, y: Math.floor(Math.random() * 45) + 0 },
+        toValue: { x: x, y: y },
         tension: 11,
-        friction: 1
+        friction: 1,
       });
   }
   componentDidMount() {
     this.triggerAnimation();
-    // return setTimeout(() => this.triggerAnimation.stopAnimation( ), 3000);
+    this.timed();
   }
   timed(){
-    return setTimeout(() => this.triggerAnimation.stopAnimation( 3000 ), 3000);
+    return setTimeout(() => this.setState({gameOver: true}), 2000);
   }
   triggerAnimation(){
-    Animated.parallel([
-        this.timing("panGreen"),
-        this.timing("panGreen1"),
-        this.timing("panGreen2"),
-        this.timing("panGreen3"),
-        this.timing("panGreen4"),
-        this.timing("panRed"),
-        this.timing("panBlue")
-    ]).start(this.triggerAnimation.bind(this));
+    if(!this.state.gameOver) {
+      Animated.parallel([
+          this.timing("panGreen"),
+          this.timing("panGreen1"),
+          this.timing("panGreen2"),
+          this.timing("panGreen3"),
+          this.timing("panGreen4"),
+          this.timing("panRed"),
+          this.timing("panBlue"),
+          this.timing("panBlue1")
+      ])
+      .start(this.triggerAnimation.bind(this));
+    } else {
+      // {this.props.score}
+    }
   };
 }
 
