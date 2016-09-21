@@ -40,15 +40,6 @@ return [
     }
   ];
 }
-  _onHighScore(){
-    let score = 0;
-    score++;
-    this.props.navigator.push({
-      title: 'How\'d you do?',
-      component: HighScore,
-      passProps: { score: this.state.score }
-    });
-  }
   _addOne(){
     this.state.score = this.state.score + 1; //++ wasn't working all the time
   }
@@ -152,18 +143,6 @@ const styles = StyleSheet.create({
     color: 'hsl(128, 92%, 37%)',
     textDecorationLine: 'underline',
     paddingBottom: 10
-  },
-  red: {
-    fontSize: 18,
-    color:'hsl(356, 86%, 58%)'
-  },
-  green: {
-    fontSize: 18,
-    color: 'hsl(128, 92%, 37%)'
-  },
-  yellow: {
-    fontSize: 18,
-    color:'hsl(59, 96%, 50%)'
   },
   button: {
     height: 44,
