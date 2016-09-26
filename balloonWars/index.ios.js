@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: -200,
     marginBottom: 60,
-    color: 'hsl(128, 92%, 37%)',
+    color: 'hsl(0, 0%, 100%)',
     fontWeight: '900'
   },
   instructions: {

@@ -32,7 +32,7 @@ const Directions = React.createClass({
         <Animatable.Text style={styles.header} animation="fadeInUp">Hi {this.props.name}</Animatable.Text>
         <Animatable.Text style={styles.text} animation="fadeInUp">How to play:</Animatable.Text>
         <Animatable.Text style={styles.red} animation="fadeInUp">* Click RED balloons to get points *</Animatable.Text>
-        <Animatable.Text style={styles.green} animation="fadeInUp">But be careful GREEN balloons take points away</Animatable.Text>
+        <Animatable.Text style={styles.tan} animation="fadeInUp">But be careful GREEN balloons take points away</Animatable.Text>
         <TouchableHighlight style={styles.button} onPress={() => this._onGame()}>
           <Text style={styles.buttonText}>Go to War!</Text>
         </TouchableHighlight>
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingBottom: 50,
     fontWeight: '700',
-    color: 'hsl(128, 92%, 37%)'
+    color: 'hsl(0, 0%, 100%)'
   },
   text: {
     fontSize: 20,
-    color: 'hsl(128, 92%, 37%)',
+    color: 'hsl(0, 0%, 100%)',
     paddingBottom: 10,
     fontWeight: '900'
   },
@@ -72,13 +72,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color:'hsl(356, 86%, 58%)'
   },
-  green: {
+  tan: {
     fontSize: 18,
-    color: 'hsl(128, 92%, 37%)'
-  },
-  yellow: {
-    fontSize: 18,
-    color:'hsl(59, 96%, 50%)'
+    color: 'hsl(0, 0%, 100%)'
   },
   button: {
     height: 44,

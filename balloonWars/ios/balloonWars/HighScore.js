@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingBottom: 50,
     fontWeight: '700',
-    color: 'hsl(128, 92%, 37%)'
+    color: 'hsl(0, 0%, 100%)'
   },
   text: {
     fontSize: 18,
